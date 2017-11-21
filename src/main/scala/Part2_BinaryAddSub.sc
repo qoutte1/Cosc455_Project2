@@ -24,20 +24,41 @@ val test4ExectedSolution: List[Int] = List(1, 0, 1, 1, 1, 0, 1)
 val test5ExectedSolution: List[Int] = List(1, 1, 1, 0, 1, 1)
 val test6ExectedSolution: List[Int] = List(1, 1, 0, 0, 0, 1)
 
+val pTestMy: List[Int] = List(1, 0, 0, 1, 0, 0, 1)
+val qTestMy: List[Int] = List(0, 0, 1, 1, 0, 0, 1)
+val testMySolution: List[Int] = List(1, 1, 0, 0, 0, 1, 0)
 
 // This function does the binary addition when there are uneven lists and still must
 // finish the add with the carry bits.
 def finishBinaryAdd(remainingBits: List[Boolean], carryBit: Boolean): List[Boolean] = ???
 
 // This function determines what the next carry bit should be based on current bits.
-def getNextCarryBit(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = ???
+def getNextCarryBit(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = {
+  carryBit match {
+      //if carryBit false and rest are true
+    case false => if(pBit && qBit) true else false
+      //case all 3 are true
+    case true => if(pBit && qBit && carryBit) true else false
+  }
+}
 
 // This function does the binary addition of two Booleans and a carry bit.
-def addBits(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = ???
+def addBits(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = {
+  qBit match {
+    case false => if(!pBit && !getNextCarryBit(qBit, !pBit, carryBit)) false else true //if(0+0) false else(if 1+0) true
+    case true => if(!pBit) true else getNextCarryBit(pBit, qBit, carryBit)//if(0+1) else (1+1)
+  }
+}
 
 // This function does the binary addition of two boolean lists. Note that the lists may not be equal in length.
 def doBinaryAddition(pBits: List[Boolean], qBits: List[Boolean], carryBit: Boolean): List[Boolean] = {
+  if(pBits.length == qBits.length){
+    pBits zip qBits map {case(a, b) => addBits(a, b, carryBit)}
 
+  } else {
+    pBits zip qBits map {case(a, b) => addBits(a, b, carryBit)}
+    //finishBinaryAdd???
+  }
 }
 
 // This function converts a binary integer list into its corresponding boolean list.
@@ -64,11 +85,16 @@ def binaryAddition(pList: List[Int], qList: List[Int]) = {
   val pBits = convertIntListToBooleanList(pList).reverse
   val qBits = convertIntListToBooleanList(qList).reverse
   val carry = false
-  doBinaryAddition(pBits, qBits, carry)
+  val sol = doBinaryAddition(pBits, qBits, carry)
+  convertBooleanListToIntList(sol).reverse
 }
 
 
 // def bindarySubtraction(pList: List[Int], qList: List[Int]) = ???
+/*
+Binary add works, but not with carry bits!!!******************************************
+ */
+if (binaryAddition(pTestMy, qTestMy).equals(testMySolution)) println("Test 1 passes!") else println("Test 1 fails.")
 
 // Testing binary addition.
 //if (binaryAddition(pTest1, qTest1).equals(test1ExectedSolution)) println("Test 1 passes!") else println("Test 1 fails.")
@@ -79,3 +105,4 @@ def binaryAddition(pList: List[Int], qList: List[Int]) = {
 // Testing binary subtraction.
 //if (binarySubtraction(pTest2, qTest2).equals(test5ExectedSolution)) println("Test 5 passes!") else println("Test 5 fails.")
 //if (binarySubtraction(pTest4, qTest4).equals(test6ExectedSolution)) println("Test 6 passes!") else println("Test 6 fails.")
+
