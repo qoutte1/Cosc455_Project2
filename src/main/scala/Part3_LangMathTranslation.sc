@@ -39,6 +39,8 @@ def translate(aList : List[String]) : List[Int] = {
   }
 }
 
+
+
 //takes in list
 //prints results
 //i.e : println(elem1+ " + " +elem2+ " = " +add(elem1, elem2))
@@ -57,7 +59,6 @@ def go(input : List[String]) : String = {
       " \n Multiplication " +newList.mkString(" * ")+
       " = " +mRes
     }
-
   }
 }
 
